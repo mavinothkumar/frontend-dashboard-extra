@@ -12,8 +12,8 @@ if ( ! defined('ABSPATH')) {
  */
 function fed_e_form_wpeditor($options)
 {
-    $name     = fed_get_data('input_meta', $options);
-    $value    = fed_get_data('user_value', $options, '', false);
+    $name     = fed_get_data('name', $options);
+    $value    = fed_get_data('value', $options, '', false);
     $class    = 'form-control '.fed_get_data('class_name', $options);
     $id       = isset($options['id_name']) && $options['id_name'] != '' ? 'id="'.esc_attr($options['id_name']).'"' : null;
     $extended = isset($options['extended']) ? (is_string($options['extended']) ? unserialize($options['extended']) : $options['extended']) : array();
@@ -21,15 +21,15 @@ function fed_e_form_wpeditor($options)
     $media_buttons = fed_get_data('settings.media_buttons', $extended);
     $quicktags     = fed_get_data('settings.quicktags', $extended, false);
     $textarea_rows = fed_get_data('settings.textarea_rows', $extended, 10);
-    $editor_height = fed_get_data('settings.editor_height', $extended, 2);
+    $editor_height = fed_get_data('settings.editor_height', $extended, 30);
 
-    return '<label>'.fed_get_wp_editor($value,
-            fed_get_random_string(), array(
+    return '<label id="'.$id.'">'.fed_get_wp_editor($value,
+            $name, array(
                 'textarea_name' => $name,
                 'media_buttons' => $media_buttons,
                 'textarea_rows' => $textarea_rows,
-                'editor_class'  => $class,
                 'editor_height' => $editor_height,
+                'editor_class'  => $class,
                 'quicktags'     => $quicktags,
             )).'</label>';
 }
@@ -56,7 +56,7 @@ function fed_e_process_form_fields($default, $row, $action, $update)
                         'media_buttons'    => fed_get_data('extended.settings.media_buttons', $row),
                         'textarea_rows'    => fed_get_data('extended.settings.textarea_rows', $row, 10),
                         'editor_class'     => fed_get_data('class_name', $row),
-                        'editor_height'    => fed_get_data('extended.settings.editor_height', $row, 2),
+                        'editor_height'    => fed_get_data('extended.settings.editor_height', $row, 5),
                         'quicktags'        => fed_get_data('extended.settings.quicktags', $row),
                     ),
                 )),

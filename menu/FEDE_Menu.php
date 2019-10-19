@@ -127,7 +127,7 @@ if ( ! class_exists('FEDE_Menu')) {
                 ),
                 'wp_editor' => array(
                     'name'  => 'WP Editor',
-                    'image' => plugins_url('assets/images/inputs/label.png', BC_FED_EXTRA_PLUGIN),
+                    'image' => plugins_url('assets/images/inputs/wp_editor.png', BC_FED_EXTRA_PLUGIN),
                 ),
             ));
         }
