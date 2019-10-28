@@ -34,7 +34,7 @@ if ( ! class_exists('FEDE_Menu')) {
             ), 12, 3);
 
 
-            add_filter('fed_custom_input_fields', array($this, 'fed_extra_custom_input_fields'), 10, 3);
+            add_filter('fed_custom_input_fields', array($this, 'fed_extra_custom_input_fields'), 10, 2);
         }
 
         /**
@@ -44,10 +44,11 @@ if ( ! class_exists('FEDE_Menu')) {
          *
          * @return string
          */
-        public function fed_extra_custom_input_fields($input, $values, $attr)
+        public function fed_extra_custom_input_fields($input, $attr)
         {
             switch ($attr['input_type']) {
                 case 'date':
+                    FED_Log::writeLog($attr);
                     $extended = array();
                     if (isset($attr['extended'])) {
                         $extended = $attr['extended'];
@@ -64,36 +65,39 @@ if ( ! class_exists('FEDE_Menu')) {
 
                     $time_24hr = isset($extended['time_24hr']) && ! empty($extended['time_24hr']) ? esc_attr($extended['time_24hr']) : false;
 
-                    $input .= '<input type="text" '.$values['required'].' data-date-format="F j, Y h:i K" data-alt-format="'.$dateFormat.'" data-alt-input="true" data-mode="'.$mode.'" placeholder="'.$dateFormat.'" data-enable-time="'.$enableTime.'" data-time_24hr="'.$time_24hr.'" type="text" name="'.$values['name'].'"    class="flatpickr '.$values['class'].'"  id="'.$values['id'].'" value="'.$values['value'].'" >';
+                    $input .= '<input type="text" '.fed_get_data('is_required',
+                            $attr).' data-date-format="F j, Y h:i K" data-alt-format="'.$dateFormat.'" data-alt-input="true" data-mode="'.$mode.'" placeholder="'.$dateFormat.'" data-enable-time="'.$enableTime.'" data-time_24hr="'.$time_24hr.'" type="text" name="'.$attr['input_meta'].'"    class="flatpickr '.fed_get_data('class_name',
+                            $attr).'"  id="'.fed_get_data('id_name', $attr).'" value="'.fed_get_data('user_value',
+                            $attr).'" >';
                     break;
 
                 case 'wp_editor':
-//                    FED_Log::writeLog([$input, $values, $attr]);
-                    $input .= fed_e_form_wpeditor($values);
+                    $input .= fed_e_form_wpeditor($attr);
                     break;
 
                 case 'color':
-                    if (empty($values['value'])) {
-                        $values['value'] = '#000000';
-                    }
-                    $input .= '<input '.$values['required'].' '.$values['disabled'].'  type="text" name="'.$values['name'].'"    class="jscolor {hash:true} '.$values['class'].'"  id="'.$values['id'].'"  value="'.esc_attr($values['value']).'" >';
+                    $user_value = fed_get_data('user_value', $attr, '#000000');
+                    $input      .= '<input '.fed_get_data('is_required', $attr).' '.fed_get_data('disabled',
+                            $attr).'  type="text" name="'.$attr['input_meta'].'"    class="form-control jscolor {hash:true} '.fed_get_data('class_name',
+                            $attr).'"  id="'.fed_get_data('id_name', $attr).'"  value="'.$user_value.'" >';
                     break;
 
                 case 'file':
-                    $image_wxh = isset($attr['image_wxh']) && count($attr['image_wxh']) === 2 ? $attr['image_wxh'] : 'thumbnail';
-                    if ( ! empty($values['value'])) {
-                        $values['value'] = (int) $values['value'];
-                        $img             = $this->get_image_by_type($values);
+                    $user_value =fed_get_data('user_value',$attr);
+                    if ( ! empty($user_value)) {
+                        $attr['user_value'] = (int) $user_value;
+                        $img                = $this->get_image_by_type($attr);
                         if (empty($img)) {
                             $img = '<span class="fed_upload_icon fa fa-2x fa fa fa-upload"></span>';
                         }
                     } else {
-                        $values['value'] = '';
-                        $img             = '<span class="fed_upload_icon fa fa-2x fa fa fa-upload"></span>';
+                        $attr['user_value'] = '';
+                        $img                = '<span class="fed_upload_icon fa fa-2x fa fa fa-upload"></span>';
                     }
-                    $input .= '<div class="fed_upload_wrapper"><div class="fed_upload_container text-center '.$values['class'].'" id="'.$values['id'].'">	
+                    $input .= '<div class="fed_upload_wrapper"><div class="fed_upload_container text-center '.fed_get_data('class_name',
+                            $attr).'" id="'.fed_get_data('id_name', $attr).'">	
 <div class="fed_upload_image_container">'.$img.'</div>
-<input type="hidden" name="'.$values['name'].'" class="fed_upload_input" value="'.$values['value'].'"  /></div>
+<input type="hidden" name="'.$attr['input_meta'].'" class="fed_upload_input" value="'.$attr['user_value'].'"  /></div>
 <span class="fed_remove_image">X</span>
 						</div>';
                     break;
@@ -324,7 +328,7 @@ if ( ! class_exists('FEDE_Menu')) {
                                                 'default_value' => 'true',
                                                 'label'         => __('Enable Media',
                                                     'frontend-dashboard'),
-                                                'value'         => fed_get_data('extended.settings.media_buttons',$row)
+                                                'value'         => fed_get_data('extended.settings.media_buttons', $row),
                                             ), 'checkbox'); ?>
                                         </div>
                                         <div class="form-group col-md-3">
@@ -332,17 +336,19 @@ if ( ! class_exists('FEDE_Menu')) {
                                                 'default_value' => 'true',
                                                 'label'         => __('Enable Quick Tags',
                                                     'frontend-dashboard'),
-                                                'value'         => fed_get_data('extended.settings.quicktags',$row)
+                                                'value'         => fed_get_data('extended.settings.quicktags', $row),
                                             ), 'checkbox'); ?>
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label for="">Textarea Rows</label>
-                                            <?php echo fed_input_box('extended[settings][textarea_rows]', array('value' => fed_get_data('extended.settings.textarea_rows',$row)),
+                                            <?php echo fed_input_box('extended[settings][textarea_rows]',
+                                                array('value' => fed_get_data('extended.settings.textarea_rows', $row)),
                                                 'number'); ?>
                                         </div>
                                         <div class="form-group col-md-3">
                                             <label for="">Editor Height</label>
-                                            <?php echo fed_input_box('extended[settings][editor_height]', array('value' => fed_get_data('extended.settings.editor_height',$row)),
+                                            <?php echo fed_input_box('extended[settings][editor_height]',
+                                                array('value' => fed_get_data('extended.settings.editor_height', $row)),
                                                 'number'); ?>
                                         </div>
                                     </div>
@@ -488,10 +494,10 @@ if ( ! class_exists('FEDE_Menu')) {
          */
         private function get_image_by_type($values)
         {
-            $mime_type = get_post_mime_type($values['value']);
+            $mime_type = get_post_mime_type($values['user_value']);
             $default   = fed_image_mime_types();
             if (strpos($mime_type, 'image') !== false) {
-                return wp_get_attachment_image($values['value'], array(100, 100));
+                return wp_get_attachment_image($values['user_value'], array(100, 100));
             }
 
             if (isset($default[$mime_type])) {

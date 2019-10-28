@@ -3,8 +3,8 @@ Contributors: vinoth06, buffercode
 Tags: dashboard, frontend dashboard extra, date, file upload, image upload, calendar, date and time, color
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7DHAEMST475BY
 Requires at least: 4.6
-Tested up to: 5.2
-Stable tag: 1.5
+Tested up to: 5.2.4
+Stable tag: 1.5.2
 License: GPL V3
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
@@ -37,6 +37,14 @@ Image files can be uploaded for the registered users in the Frontend Dashboard.
 
 == Changelog ==
 
+= 1.5.2 [28-Oct-2019] =
+
+* Bug fixes
+
+= 1.5.1 [12-Oct-2019] =
+
+* Support WP Editor (Beta)
+
 = 1.5 [12-Oct-2019] =
 
 * Support Frontend Dashboard 1.5
@@ -67,9 +75,9 @@ Image files can be uploaded for the registered users in the Frontend Dashboard.
 * Public release
 
 == Upgrade Notice ==
-= 1.5 [12-Oct-2019] =
+= 1.5.2 [28-Oct-2019] =
 
-* Support Frontend Dashboard 1.5
+* Bug fixes
 == Screenshots ==
 1. Date and Time
 2. Color

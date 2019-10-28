@@ -12,8 +12,8 @@ if ( ! defined('ABSPATH')) {
  */
 function fed_e_form_wpeditor($options)
 {
-    $name     = fed_get_data('name', $options);
-    $value    = fed_get_data('value', $options, '', false);
+    $name     = fed_get_data('input_meta', $options);
+    $value    = fed_get_data('user_value', $options, '', false);
     $class    = 'form-control '.fed_get_data('class_name', $options);
     $id       = isset($options['id_name']) && $options['id_name'] != '' ? 'id="'.esc_attr($options['id_name']).'"' : null;
     $extended = isset($options['extended']) ? (is_string($options['extended']) ? unserialize($options['extended']) : $options['extended']) : array();
