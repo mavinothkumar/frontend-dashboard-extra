@@ -2,13 +2,15 @@
 /**
  * Plugin Name: Frontend Dashboard Extra
  * Plugin URI: https://buffercode.com/plugin/frontend-dashboard-extra
- * Description: Front end dashboard provide high flexible way to customize the user dashboard on front end rather than WordPress wp-admin dashboard.
- * Version: 1.5.2
+ * Description: Front end dashboard provide high flexible way to customize the user dashboard on front end rather than
+ * WordPress wp-admin dashboard.
+ * Version: 1.5.6
  * Author: vinoth06
  * Author URI: http://buffercode.com/
  * License: GPLv2
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: fed
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html Text Domain: fed
+ *
+ * @package frontend-dashboard-extra
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -16,13 +18,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 $fed_check = get_option( 'fed_plugin_version' );
 
-include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+require_once ABSPATH . 'wp-admin/includes/plugin.php';
 if ( $fed_check && is_plugin_active( 'frontend-dashboard/frontend-dashboard.php' ) ) {
 
 	/**
 	 * Version Number
 	 */
-	define( 'BC_FED_EXTRA_PLUGIN_VERSION', '1.5.2' );
+	define( 'BC_FED_EXTRA_PLUGIN_VERSION', '1.5.6' );
 
 	/**
 	 * App Name
@@ -50,21 +52,23 @@ if ( $fed_check && is_plugin_active( 'frontend-dashboard/frontend-dashboard.php'
 	require_once BC_FED_EXTRA_PLUGIN_DIR . '/menu/FEDE_Menu.php';
 	require_once BC_FED_EXTRA_PLUGIN_DIR . '/fields/FEDEFormWPEditor.php';
 	require_once BC_FED_EXTRA_PLUGIN_DIR . '/functions.php';
-}
-else {
+	require_once BC_FED_EXTRA_PLUGIN_DIR . '/menu/fields/fede_files.php';
+} else {
 	add_action( 'admin_notices', 'fed_global_admin_notification_extra' );
 	function fed_global_admin_notification_extra() {
 		?>
 		<div class="notice notice-warning">
 			<p>
 				<b>
-					<?php _e( 'Please install <a href="https://buffercode.com/plugin/frontend-dashboard">Frontend Dashboard</a> to use this plugin [Frontend Dashboard Extra]', 'frontend-dashboard-extra' );
+					<?php
+					_e(
+						'Please install <a href="https://buffercode.com/plugin/frontend-dashboard">Frontend Dashboard</a> to use this plugin [Frontend Dashboard Extra]',
+						'frontend-dashboard-extra'
+					);
 					?>
 				</b>
 			</p>
 		</div>
 		<?php
 	}
-	?>
-	<?php
 }
