@@ -4,11 +4,12 @@
  * Plugin URI: https://buffercode.com/plugin/frontend-dashboard-extra
  * Description: Front end dashboard provide high flexible way to customize the user dashboard on front end rather than
  * WordPress wp-admin dashboard.
- * Version: 1.5.6
+ * Version: 1.5.10
  * Author: vinoth06
  * Author URI: http://buffercode.com/
  * License: GPLv2
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html Text Domain: fed
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain: fed
  *
  * @package frontend-dashboard-extra
  */
@@ -24,7 +25,7 @@ if ( $fed_check && is_plugin_active( 'frontend-dashboard/frontend-dashboard.php'
 	/**
 	 * Version Number
 	 */
-	define( 'BC_FED_EXTRA_PLUGIN_VERSION', '1.5.6' );
+	define( 'BC_FED_EXTRA_PLUGIN_VERSION', '1.5.10' );
 
 	/**
 	 * App Name
@@ -53,6 +54,7 @@ if ( $fed_check && is_plugin_active( 'frontend-dashboard/frontend-dashboard.php'
 	require_once BC_FED_EXTRA_PLUGIN_DIR . '/fields/FEDEFormWPEditor.php';
 	require_once BC_FED_EXTRA_PLUGIN_DIR . '/functions.php';
 	require_once BC_FED_EXTRA_PLUGIN_DIR . '/menu/fields/fede_files.php';
+	require_once BC_FED_EXTRA_PLUGIN_DIR . '/menu/fields/fede_label.php';
 } else {
 	add_action( 'admin_notices', 'fed_global_admin_notification_extra' );
 	function fed_global_admin_notification_extra() {

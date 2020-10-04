@@ -124,7 +124,7 @@ function fed_image_mime_types() {
 		'application/javascript'                                                    => site_url(
 		                                                                               ) . '/wp-includes/images/media/archive.png"',
 		'application/pdf'                                                           => site_url(
-		                                                                               ) . '/wp-includes/images/media/archive.png"',
+		                                                                               ) . '/wp-includes/images/media/document.png"',
 		'application/x-shockwave-flash'                                             => site_url(
 		                                                                               ) . '/wp-includes/images/media/archive.png"',
 		'application/java'                                                          => site_url(
