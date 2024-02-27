@@ -20,11 +20,13 @@ function fed_form_table( $options ) {
 	$id                  = fed_get_data( 'id_name', $options ) != '' ? 'id="' . esc_attr( $options['id_name'] ) . '"' : null;
 	$extended            = fed_get_data( 'extended', $options );
 	$unseralize          = $extended ? maybe_unserialize( $extended ) : null;
+	$readonly            = '';
+	$disabled            = '';
 	$disable_user_access = $unseralize ? fed_get_data( 'disable_user_access', $unseralize ) : null;
 	if ( 'Disable' === $disable_user_access && ! fed_is_admin() ) {
 		$name     = '';
-		$readonly = true;
-		$disabled = true;
+		$readonly = ' readonly=readonly ';
+		$disabled = ' disabled=disabled ';
 	}
 
 	if ( ! empty( $value ) ) {
@@ -50,15 +52,8 @@ function fed_form_table( $options ) {
 		$td .= '<tr>';
 		foreach ( $table_header as $key => $header ) {
 			$user_value = isset( $value[ 'row_' . $row . '_' . $key ] ) ? $value[ 'row_' . $row . '_' . $key ] : '';
-			$name       = '' !== $name ? $name . '[row_' . $row . '_' . $key . ']' : '';
-			$td         .= '<td>' . fed_form_single_line(
-					array(
-						'input_meta' => $name,
-						'user_value' => $user_value,
-						'readonly'   => $readonly,
-						'disabled'   => $disabled,
-					)
-				) . '</td>';
+			$_name       = '' !== $name ? $name . '[row_' . $row . '_' . $key . ']' : '';
+			$td         .= '<td><input type="text" '.$readonly. $disabled .' name="' . $_name . '" value="' . esc_html( $user_value ) . '" class="form-control"  </td>';
 		}
 		$td .= '</tr>';
 	}
