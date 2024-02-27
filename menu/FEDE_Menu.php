@@ -467,7 +467,7 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
 		}
 		public function fed_extra_admin_input_fields_container_extra_table( $row, $action, $menu_options ) {
 			?>
-            <div class="row fed_input_type_container fed_input_select_container hide">
+            <div class="row fed_input_type_container fed_input_table_container hide">
                 <form method="post"
                       class="fed_admin_menu fed_ajax"
                       action="<?php echo esc_url( admin_url( 'admin-ajax.php?action=fed_admin_setting_up_form' )) ?>">
@@ -503,15 +503,6 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
 
 									fed_get_admin_up_role_based( $row, $action, $menu_options );
 									?>
-                                    <div class="row">
-                                        <div class="form-group col-md-4 fed_show_user_profile">
-											<?php echo fed_input_box( 'extended[multiple]', array(
-												'default_value' => 'Enable',
-												'label'         => __( 'Enable Multi Select', 'frontend-dashboard' ),
-												'value'         => isset( $row['extended']['multiple'] ) ? $row['extended']['multiple'] : '',
-											), 'checkbox' ); ?>
-                                        </div>
-                                    </div>
                                     <div class="row fed_key_value_paid">
                                         <div class="col-md-5">
                                             <label for=""><?php _e( 'Values', 'frontend-dashboard' ) ?></label>
@@ -526,7 +517,8 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
                                             <div class="row fed_key_value_eg_container">
                                                 <div class="col-md-12">
                                                     <label for=""><?php _e( 'Examples:', 'frontend-dashboard' ) ?></label>
-                                                    <p>column1,column2,column3,column4,column5</p>
+                                                    <p>Column Headings with comma separated|Number of rows</p>
+                                                    <p>column1,column2,column3,column4,column5|2</p>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <b><?php _e( 'This will be output as', 'frontend-dashboard' ) ?></b>
@@ -541,6 +533,22 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
                                                             <th>column5</th>
                                                         </tr>
                                                         </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td><input style="width:100px"></td>
+                                                            <td><input style="width:100px"></td>
+                                                            <td><input style="width:100px"></td>
+                                                            <td><input style="width:100px"></td>
+                                                            <td><input style="width:100px"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><input style="width:100px"></td>
+                                                            <td><input style="width:100px"></td>
+                                                            <td><input style="width:100px"></td>
+                                                            <td><input style="width:100px"></td>
+                                                            <td><input style="width:100px"></td>
+                                                        </tr>
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
