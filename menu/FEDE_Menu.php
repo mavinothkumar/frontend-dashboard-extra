@@ -45,6 +45,12 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
 				'fed_extra_admin_input_fields_container_extra_label',
 			), 12, 3
 			);
+            add_action(
+				'fed_admin_input_fields_container_extra', array(
+				$this,
+				'fed_extra_admin_input_fields_container_extra_table',
+			), 12, 3
+			);
 
 			add_filter( 'fed_custom_input_fields', array( $this, 'fed_extra_custom_input_fields' ), 10, 2 );
 		}
@@ -109,6 +115,9 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
 				case 'label':
 					$input .= fed_form_label( $attr );
 					break;
+                case 'table':
+					$input .= fed_form_table( $attr );
+					break;
 			}
 
 			return $input;
@@ -144,6 +153,10 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
 					'label'     => array(
 						'name'  => 'Label',
 						'image' => plugins_url( 'assets/images/inputs/label.png', BC_FED_EXTRA_PLUGIN ),
+					),
+                    'table'     => array(
+						'name'  => 'Table',
+						'image' => plugins_url( 'assets/images/inputs/table.png', BC_FED_EXTRA_PLUGIN ),
 					),
 				)
 			);
@@ -450,6 +463,99 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
 					</div>
 				</form>
 			</div>
+			<?php
+		}
+		public function fed_extra_admin_input_fields_container_extra_table( $row, $action, $menu_options ) {
+			?>
+            <div class="row fed_input_type_container fed_input_select_container hide">
+                <form method="post"
+                      class="fed_admin_menu fed_ajax"
+                      action="<?php echo esc_url( admin_url( 'admin-ajax.php?action=fed_admin_setting_up_form' )) ?>">
+
+					<?php fed_wp_nonce_field( 'fed_nonce', 'fed_nonce' ) ?>
+
+					<?php echo fed_loader(); ?>
+
+                    <div class="col-md-12">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                                    <b><?php _e( 'Table', 'frontend-dashboard' ) ?></b>
+                                </h3>
+                            </div>
+                            <div class="panel-body">
+                                <div class="fed_input_text">
+									<?php fed_get_admin_up_label_input_order( $row ); ?>
+                                    <div class="row">
+										<?php fed_get_admin_up_input_meta( $row ) ?>
+
+                                        <div class="form-group col-md-3">
+											<?php fed_get_class_field( $row ) ?>
+                                        </div>
+
+                                        <div class="form-group col-md-3">
+											<?php fed_get_id_field( $row ) ?>
+                                        </div>
+
+                                    </div>
+									<?php
+									fed_get_admin_up_display_permission( $row, $action );
+
+									fed_get_admin_up_role_based( $row, $action, $menu_options );
+									?>
+                                    <div class="row">
+                                        <div class="form-group col-md-4 fed_show_user_profile">
+											<?php echo fed_input_box( 'extended[multiple]', array(
+												'default_value' => 'Enable',
+												'label'         => __( 'Enable Multi Select', 'frontend-dashboard' ),
+												'value'         => isset( $row['extended']['multiple'] ) ? $row['extended']['multiple'] : '',
+											), 'checkbox' ); ?>
+                                        </div>
+                                    </div>
+                                    <div class="row fed_key_value_paid">
+                                        <div class="col-md-5">
+                                            <label for=""><?php _e( 'Values', 'frontend-dashboard' ) ?></label>
+											<?php echo fed_input_box( 'input_value', array(
+												'placeholder' => __( 'Please enter the value by key,value',
+													'frontend-dashboard' ),
+												'rows'        => 10,
+												'value'       => $row['input_value'],
+											), 'multi_line' ); ?>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="row fed_key_value_eg_container">
+                                                <div class="col-md-12">
+                                                    <label for=""><?php _e( 'Examples:', 'frontend-dashboard' ) ?></label>
+                                                    <p>column1,column2,column3,column4,column5</p>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <b><?php _e( 'This will be output as', 'frontend-dashboard' ) ?></b>
+                                                    <br><br>
+													<table>
+                                                        <thead>
+                                                        <tr>
+                                                            <th>column1</th>
+                                                            <th>column2</th>
+                                                            <th>column3</th>
+                                                            <th>column4</th>
+                                                            <th>column5</th>
+                                                        </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+									<?php
+									fed_get_input_type_and_submit_btn( 'select', $action );
+									?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
 			<?php
 		}
 

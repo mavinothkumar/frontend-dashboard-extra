@@ -55,6 +55,7 @@ if ( $fed_check && is_plugin_active( 'frontend-dashboard/frontend-dashboard.php'
 	require_once BC_FED_EXTRA_PLUGIN_DIR . '/functions.php';
 	require_once BC_FED_EXTRA_PLUGIN_DIR . '/menu/fields/fede_files.php';
 	require_once BC_FED_EXTRA_PLUGIN_DIR . '/menu/fields/fede_label.php';
+	require_once BC_FED_EXTRA_PLUGIN_DIR . '/menu/fields/fede_table.php';
 } else {
 	add_action( 'admin_notices', 'fed_global_admin_notification_extra' );
 	function fed_global_admin_notification_extra() {
