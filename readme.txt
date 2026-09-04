@@ -36,7 +36,6 @@ Image files can be uploaded for the registered users in the Frontend Dashboard.
 4. Do save.
 
 == Changelog ==
-
 = 1.6 [27-Feb-2024] =
 * Table field added (new)
 
