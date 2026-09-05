@@ -4,7 +4,7 @@ Tags: dashboard, frontend dashboard extra, date, file upload, image upload, cale
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=7DHAEMST475BY
 Requires at least: 5.8
 Tested up to: 7.1
-Stable tag: 3.0
+Stable tag: 3.0.0
 License: GPL V3
 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
