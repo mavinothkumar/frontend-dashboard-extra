@@ -14,7 +14,7 @@ function fed_e_form_wpeditor( $options ) {
 	$name     = fed_get_data( 'input_meta', $options );
 	$value    = fed_get_data( 'user_value', $options, '', false );
 	$class    = 'form-control ' . fed_get_data( 'class_name', $options );
-	$id       = isset( $options['id_name'] ) && $options['id_name'] != '' ? 'id="' . esc_attr( $options['id_name'] ) . '"' : null;
+	$id       = isset( $options['id_name'] ) && $options['id_name'] != '' ? esc_attr( $options['id_name'] ) : '';
 	$extended = isset( $options['extended'] ) ? ( is_string( $options['extended'] ) ? unserialize( $options['extended'] ) : $options['extended'] ) : array();
 
 	$media_buttons = fed_get_data( 'settings.media_buttons', $extended );
@@ -22,7 +22,8 @@ function fed_e_form_wpeditor( $options ) {
 	$textarea_rows = fed_get_data( 'settings.textarea_rows', $extended, 10 );
 	$editor_height = fed_get_data( 'settings.editor_height', $extended, 30 );
 
-	return '<label id="' . $id . '">' . fed_get_wp_editor(
+	$label_id_attr = '' !== $id ? ' id="' . $id . '"' : '';
+	return '<label' . $label_id_attr . '>' . fed_get_wp_editor(
 		$value,
 		$name, array(
 			'textarea_name' => $name,

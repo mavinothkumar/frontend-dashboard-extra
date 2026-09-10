@@ -45,15 +45,27 @@ function fed_form_table( $options ) {
 		$th .= '<th>' . $header . '</th>';
 	}
 
+	//Table Default Cell Values
+	$default_cell_values = isset( $table[2] ) ? json_decode( $table[2], true ) : array();
+	if ( ! is_array( $default_cell_values ) ) {
+		$default_cell_values = array();
+	}
+
 	//Table Rows
 	$table_rows = isset( $table[1] ) ? (int) $table[1] : 0;
 	$td         = '';
 	for ( $row = 0; $row < $table_rows; $row ++ ) {
 		$td .= '<tr>';
 		foreach ( $table_header as $key => $header ) {
-			$user_value = isset( $value[ 'row_' . $row . '_' . $key ] ) ? $value[ 'row_' . $row . '_' . $key ] : '';
-			$_name       = '' !== $name ? $name . '[row_' . $row . '_' . $key . ']' : '';
-			$td         .= '<td><input type="text" '.$readonly. $disabled .' name="' . $_name . '" value="' . esc_html( $user_value ) . '" class="form-control"  </td>';
+			// Fallback to default cell values set by admin if user hasn't provided a value yet
+			$user_val_key = 'row_' . $row . '_' . $key;
+			if ( isset( $value[ $user_val_key ] ) && '' !== $value[ $user_val_key ] ) {
+				$user_value = $value[ $user_val_key ];
+			} else {
+				$user_value = isset( $default_cell_values[ $user_val_key ] ) ? $default_cell_values[ $user_val_key ] : '';
+			}
+			$_name       = '' !== $name ? $name . '[' . $user_val_key . ']' : '';
+			$td         .= '<td><input type="text" '.$readonly. $disabled .' name="' . $_name . '" value="' . esc_attr( $user_value ) . '" class="form-control" /></td>';
 		}
 		$td .= '</tr>';
 	}
