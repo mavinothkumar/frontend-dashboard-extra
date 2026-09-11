@@ -80,6 +80,33 @@ function fed_e_process_form_fields( $default, $row, $action, $update ) {
 		}
 	}
 
+	if ( 'table' === $row['input_type'] ) {
+		if ( 'yes' === $update ) {
+			$extended = array(
+				'extended' => serialize(
+					array(
+						'table_mode'          => isset( $row['extended']['table_mode'] ) ? sanitize_text_field( $row['extended']['table_mode'] ) : 'editable',
+						'table_template'      => isset( $row['extended']['table_template'] ) ? sanitize_text_field( $row['extended']['table_template'] ) : 'bordered',
+						'disable_user_access' => isset( $row['extended']['disable_user_access'] ) ? wp_kses_post( $row['extended']['disable_user_access'] ) : '',
+					)
+				),
+			);
+
+			return array_merge( $default, $extended );
+		} else {
+			if ( is_string( $row['extended'] ) ) {
+				$default['extended'] = unserialize( $row['extended'] );
+
+				return $default;
+			}
+			if ( is_array( $row['extended'] ) ) {
+				$default['extended'] = $row['extended'];
+
+				return $default;
+			}
+		}
+	}
+
 	return $default;
 }
 
@@ -90,7 +117,9 @@ function fed_e_process_form_fields( $default, $row, $action, $update ) {
  */
 function fed_e_default_extended_fields( $fields ) {
 	$array = array(
-		'settings' => array(),
+		'settings'       => array(),
+		'table_mode'     => 'editable',
+		'table_template' => 'bordered',
 	);
 
 	return array_merge( $fields, $array );
