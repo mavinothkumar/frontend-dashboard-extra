@@ -113,15 +113,7 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
 					break;
 
 				case 'color':
-					$user_value = fed_get_data( 'user_value', $attr, '#000000' );
-					$input      .= '<input ' . fed_get_data( 'is_required', $attr ) . ' ' . fed_get_data(
-							'disabled',
-							$attr
-						) . '  type="text" name="' . $attr['input_meta'] . '"    class="form-control jscolor {hash:true} ' . fed_get_data(
-						               'class_name',
-						               $attr
-					               ) . '"  id="' . fed_get_data( 'id_name',
-							$attr ) . '"  value="' . $user_value . '" >';
+					$input .= fed_form_color( $attr );
 					break;
 
 				case 'file':
