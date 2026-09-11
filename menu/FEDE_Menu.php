@@ -924,12 +924,12 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
 							</div>
 							<div>
 								<h3 class="text-sm sm:text-base font-bold text-slate-900 m-0"><?php esc_html_e( 'Label / HTML Content', 'frontend-dashboard' ); ?></h3>
-								<p class="text-xs text-slate-500 m-0 mt-0.5"><?php esc_html_e( 'Enter the HTML or description text that will be shown to users.', 'frontend-dashboard' ); ?></p>
+								<p class="text-xs text-slate-500 m-0 mt-0.5"><?php esc_html_e( 'Enter rich HTML or description text that will be shown to users.', 'frontend-dashboard' ); ?></p>
 							</div>
 						</div>
 
-						<div class="space-y-2">
-							<textarea name="input_value" rows="6" class="w-full rounded-2xl border-slate-200 bg-slate-50 text-xs text-slate-800 p-3.5 outline-none focus:border-indigo-500 focus:bg-white font-mono transition-all" placeholder="<?php esc_attr_e( 'Enter HTML content or text here...', 'frontend-dashboard' ); ?>"><?php echo esc_textarea( $label_content ); ?></textarea>
+						<div class="fed_wp_editor_wrapper rounded-2xl overflow-hidden border border-slate-200/90 shadow-2xs bg-white">
+							<textarea id="fed_label_html_content_editor" name="input_value" rows="10" class="w-full p-4 border-0 outline-none font-mono text-xs text-slate-800 bg-white" placeholder="<?php esc_attr_e( 'Enter HTML content or text here...', 'frontend-dashboard' ); ?>"><?php echo esc_textarea( $label_content ); ?></textarea>
 						</div>
 					</div>
 
