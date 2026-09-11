@@ -14,6 +14,10 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
 		 * FEDE_Menu constructor.
 		 */
 		public function __construct() {
+			if ( function_exists( 'fed_form_date' ) ) {
+				// Core natively handles Extra fields.
+				return;
+			}
 			add_action( 'fed_admin_input_item_options', array( $this, 'fed_extra_admin_input_item_options' ) );
 			add_action(
 				'fed_admin_input_fields_container_extra', array(

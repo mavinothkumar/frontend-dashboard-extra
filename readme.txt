@@ -12,8 +12,9 @@ Frontend Dashboard Extra WordPress plugin is a supportive plugin for Frontend Da
 
 == Description ==
 
-> #### Notice
-> This is an Add-on plugin of [Frontend Dashboard](https://wordpress.org/plugins/frontend-dashboard/), So please install [Frontend Dashboard](https://buffercode.com/plugin/frontend-dashboard) to use this plugin
+> #### Important Notice: Merged into Core
+> As of Frontend Dashboard v3.0.0+, all features of Frontend Dashboard Extra (Date & Time picker, File Upload, Hex Color picker, WP Editor, Custom Label, and Dynamic Table grid) have been merged natively into the [Frontend Dashboard](https://wordpress.org/plugins/frontend-dashboard/) core plugin.
+> You do not need to install or activate this add-on anymore.
 
 Frontend Dashboard Extra WordPress plugin is a supportive plugin for Frontend Dashboard with supportive additional features likes extra Calendar for selecting date and time, Colors and File Upload for images.
 
