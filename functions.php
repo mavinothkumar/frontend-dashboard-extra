@@ -18,8 +18,15 @@ add_filter(
  */
 function fed_get_date_formats() {
 	$date_formats = array(
-		'd-m-Y' => 'Date-Month-Year',
-		'm-d-Y' => 'Month-Date-Year',
+		'd-m-Y'  => 'Date-Month-Year (14-09-2026)',
+		'm-d-Y'  => 'Month-Date-Year (09-14-2026)',
+		'Y-m-d'  => 'Year-Month-Date (2026-09-14)',
+		'd/m/Y'  => 'Date/Month/Year (14/09/2026)',
+		'm/d/Y'  => 'Month/Date/Year (09/14/2026)',
+		'Y/m/d'  => 'Year/Month/Date (2026/09/14)',
+		'd.m.Y'  => 'Date.Month.Year (14.09.2026)',
+		'F j, Y' => 'Full Month Date, Year (September 14, 2026)',
+		'M j, Y' => 'Short Month Date, Year (Sep 14, 2026)',
 	);
 
 	return apply_filters( 'fed_get_date_formats_filter', $date_formats );

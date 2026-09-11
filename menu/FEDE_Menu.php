@@ -69,28 +69,43 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
 					if ( isset( $attr['extended'] ) ) {
 						$extended = $attr['extended'];
 						if ( is_string( $extended ) ) {
-							$extended = unserialize( $extended );
+							$extended = maybe_unserialize( $extended );
 						}
 					}
 
-					$dateFormat = isset( $extended['date_format'] ) && ! empty( $extended['date_format'] ) ? esc_attr( $extended['date_format'] ) : 'm-d-Y';
+					$dateFormat    = isset( $extended['date_format'] ) && ! empty( $extended['date_format'] ) ? esc_attr( $extended['date_format'] ) : 'd-m-Y';
+					$mode          = isset( $extended['date_mode'] ) && ! empty( $extended['date_mode'] ) ? esc_attr( $extended['date_mode'] ) : 'single';
+					$enableTime    = isset( $extended['enable_time'] ) && 'true' === (string) $extended['enable_time'] ? 'true' : 'false';
+					$time_24hr     = isset( $extended['time_24hr'] ) && 'true' === (string) $extended['time_24hr'] ? 'true' : 'false';
+					$enableSeconds = isset( $extended['enable_seconds'] ) && 'true' === (string) $extended['enable_seconds'] ? 'true' : 'false';
+					$minDate       = isset( $extended['min_date'] ) && ! empty( $extended['min_date'] ) ? esc_attr( $extended['min_date'] ) : '';
+					$maxDate       = isset( $extended['max_date'] ) && ! empty( $extended['max_date'] ) ? esc_attr( $extended['max_date'] ) : '';
 
-					$mode = isset( $extended['date_mode'] ) && ! empty( $extended['date_mode'] ) ? esc_attr( $extended['date_mode'] ) : 'single';
+					if ( 'true' === $enableTime ) {
+						if ( 'true' === $time_24hr ) {
+							$timePart = 'true' === $enableSeconds ? ' H:i:S' : ' H:i';
+						} else {
+							$timePart = 'true' === $enableSeconds ? ' h:i:S K' : ' h:i K';
+						}
+						$fullFormat = $dateFormat . $timePart;
+					} else {
+						$fullFormat = $dateFormat;
+					}
 
-					$enableTime = isset( $extended['enable_time'] ) && ! empty( $extended['enable_time'] ) ? esc_attr( $extended['enable_time'] ) : false;
+					$placeholder = isset( $attr['placeholder'] ) && ! empty( $attr['placeholder'] ) ? esc_attr( $attr['placeholder'] ) : $fullFormat;
 
-					$time_24hr = isset( $extended['time_24hr'] ) && ! empty( $extended['time_24hr'] ) ? esc_attr( $extended['time_24hr'] ) : false;
+					$extra_attrs = '';
+					if ( '' !== $minDate ) {
+						$extra_attrs .= ' data-min-date="' . $minDate . '"';
+					}
+					if ( '' !== $maxDate ) {
+						$extra_attrs .= ' data-max-date="' . $maxDate . '"';
+					}
+					if ( 'true' === $enableSeconds ) {
+						$extra_attrs .= ' data-enable-seconds="true"';
+					}
 
-					$input .= '<input type="text" ' . fed_get_data(
-							'is_required',
-							$attr
-						) . ' data-date-format="F j, Y h:i K" data-alt-format="' . $dateFormat . '" data-alt-input="true" data-mode="' . $mode . '" placeholder="' . $dateFormat . '" data-enable-time="' . $enableTime . '" data-time_24hr="' . $time_24hr . '" type="text" name="' . $attr['input_meta'] . '"    class="flatpickr ' . fed_get_data(
-						          'class_name',
-						          $attr
-					          ) . '"  id="' . fed_get_data( 'id_name', $attr ) . '" value="' . fed_get_data(
-						          'user_value',
-						          $attr
-					          ) . '" >';
+					$input .= '<input type="text" ' . fed_get_data( 'is_required', $attr ) . ' data-date-format="' . esc_attr( $fullFormat ) . '" data-alt-format="' . esc_attr( $fullFormat ) . '" data-alt-input="true" data-mode="' . esc_attr( $mode ) . '" placeholder="' . esc_attr( $placeholder ) . '" data-enable-time="' . esc_attr( $enableTime ) . '" data-time_24hr="' . esc_attr( $time_24hr ) . '"' . $extra_attrs . ' name="' . esc_attr( $attr['input_meta'] ) . '" class="flatpickr ' . esc_attr( fed_get_data( 'class_name', $attr ) ) . '" id="' . esc_attr( fed_get_data( 'id_name', $attr ) ) . '" value="' . esc_attr( fed_get_data( 'user_value', $attr ) ) . '" >';
 					break;
 
 				case 'wp_editor':
@@ -171,6 +186,10 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
 		 */
 		public function fed_extra_admin_input_fields_container_extra_date( $row, $action, $menu_options ) {
 			$is_active = ( isset( $row['input_type'] ) && 'date' === $row['input_type'] );
+			$extended  = isset( $row['extended'] ) ? ( is_string( $row['extended'] ) ? maybe_unserialize( $row['extended'] ) : $row['extended'] ) : array();
+			if ( ! is_array( $extended ) ) {
+				$extended = array();
+			}
 			?>
 			<div class="fed_input_type_container fed_input_date_container space-y-7 <?php echo $is_active ? '' : 'hide hidden'; ?>" data-field-type="date">
 				<form method="post"
@@ -214,7 +233,7 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
 											'date_format',
 											array(
 												'name'    => 'extended[date_format]',
-												'value'   => isset( $row['extended']['date_format'] ) ? $row['extended']['date_format'] : '',
+												'value'   => isset( $extended['date_format'] ) ? $extended['date_format'] : '',
 												'options' => fed_get_date_formats(),
 											),
 											'select'
@@ -228,7 +247,7 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
 											'enable_time',
 											array(
 												'name'    => 'extended[enable_time]',
-												'value'   => isset( $row['extended']['enable_time'] ) ? $row['extended']['enable_time'] : '',
+												'value'   => isset( $extended['enable_time'] ) ? $extended['enable_time'] : '',
 												'options' => array(
 													'false' => __( 'False', 'frontend-dashboard' ),
 													'true'  => __( 'True', 'frontend-dashboard' ),
@@ -245,7 +264,7 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
 											'date_mode',
 											array(
 												'name'    => 'extended[date_mode]',
-												'value'   => isset( $row['extended']['date_mode'] ) ? $row['extended']['date_mode'] : '',
+												'value'   => isset( $extended['date_mode'] ) ? $extended['date_mode'] : '',
 												'options' => fed_get_date_mode(),
 											),
 											'select'
@@ -259,15 +278,54 @@ if ( ! class_exists( 'FEDE_Menu' ) ) {
 											'time_24hr',
 											array(
 												'name'    => 'extended[time_24hr]',
-												'value'   => isset( $row['extended']['time_24hr'] ) ? $row['extended']['time_24hr'] : '',
+												'value'   => isset( $extended['time_24hr'] ) ? $extended['time_24hr'] : '',
 												'options' => array(
 													'true'  => __( '24 Hours', 'frontend-dashboard' ),
-													'false' => __( '12 Hours', 'frontend-dashboard' ),
+													'false' => __( '12 Hours (AM/PM)', 'frontend-dashboard' ),
 												),
 											),
 											'select'
 										);
 										?>
+									</div>
+									<div class="space-y-1.5">
+										<label class="block text-xs font-bold text-slate-700"><?php esc_html_e( 'Enable Seconds', 'frontend-dashboard' ); ?></label>
+										<?php
+										echo fed_input_box(
+											'enable_seconds',
+											array(
+												'name'    => 'extended[enable_seconds]',
+												'value'   => isset( $extended['enable_seconds'] ) ? $extended['enable_seconds'] : '',
+												'options' => array(
+													'false' => __( 'False', 'frontend-dashboard' ),
+													'true'  => __( 'True', 'frontend-dashboard' ),
+												),
+											),
+											'select'
+										);
+										?>
+									</div>
+									<div class="space-y-1.5">
+										<label class="block text-xs font-bold text-slate-700"><?php esc_html_e( 'Min Date', 'frontend-dashboard' ); ?></label>
+										<input
+											type="text"
+											name="extended[min_date]"
+											value="<?php echo esc_attr( isset( $extended['min_date'] ) ? $extended['min_date'] : '' ); ?>"
+											placeholder="<?php esc_attr_e( 'e.g. today or 2026-01-01', 'frontend-dashboard' ); ?>"
+											class="w-full text-xs text-slate-800 bg-slate-50 border border-slate-200 rounded-xl px-3.5 outline-none focus:border-indigo-500 focus:bg-white transition-all"
+											style="min-height:38px;"
+										/>
+									</div>
+									<div class="space-y-1.5">
+										<label class="block text-xs font-bold text-slate-700"><?php esc_html_e( 'Max Date', 'frontend-dashboard' ); ?></label>
+										<input
+											type="text"
+											name="extended[max_date]"
+											value="<?php echo esc_attr( isset( $extended['max_date'] ) ? $extended['max_date'] : '' ); ?>"
+											placeholder="<?php esc_attr_e( 'e.g. today or 2026-12-31', 'frontend-dashboard' ); ?>"
+											class="w-full text-xs text-slate-800 bg-slate-50 border border-slate-200 rounded-xl px-3.5 outline-none focus:border-indigo-500 focus:bg-white transition-all"
+											style="min-height:38px;"
+										/>
 									</div>
 								</div>
 							</div>
